@@ -17,8 +17,19 @@ app.use(httpProxy(`${proxy}`, {
     proxyReqOpts['Authorization'] = `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}`;
     proxyReqOpts['Proxy-Authorization'] = `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}`;
     return proxyReqOpts;
+  },
+  userResHeaderDecorator(headers, userReq, userRes, proxyReq, proxyRes) {
+    headers['access-control-allow-origin'] = '*';
+    return headers;
   }
 }));
+
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
