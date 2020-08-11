@@ -6,7 +6,7 @@ const httpProxy = require('express-http-proxy');
 
 const port = process.env.PORT || config.prot;
 const proxy = process.env.PROXY || config.proxy;
-const login = process.env.LOGIN || config.proxy;
+const login = process.env.LOGIN || config.login;
 const password = process.env.PASSWORD || config.password;
 
 app.use(cors());
