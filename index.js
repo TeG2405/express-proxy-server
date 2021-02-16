@@ -14,6 +14,7 @@ app.use(cors());
 app.use(httpProxy(`${host}`, {
   https: true,
   proxyReqOptDecorator: function(proxyReqOpts) {
+    proxyReqOpts.rejectUnauthorized = false;
     return proxyReqOpts;
   },
   userResHeaderDecorator(headers, userReq, userRes, proxyReq, proxyRes) {
