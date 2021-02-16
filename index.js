@@ -3,19 +3,17 @@ const cors = require('cors');
 const app = express();
 const config = require('./package.json');
 const httpProxy = require('express-http-proxy');
+const dotenv = require('dotenv');
 
-const port = process.env.PORT || config.prot;
-const proxy = process.env.PROXY || config.proxy;
-const login = process.env.LOGIN || config.login;
-const password = process.env.PASSWORD || config.password;
+dotenv.config();
+
+const port = process.env.PORT;
+const host = process.env.HOST;
 
 app.use(cors());
-app.use(httpProxy(`${proxy}`, {
+app.use(httpProxy(`${host}`, {
   https: true,
   proxyReqOptDecorator: function(proxyReqOpts) {
-    proxyReqOpts['auth'] = `${login}:${password}`;
-    proxyReqOpts['Authorization'] = `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}`;
-    proxyReqOpts['Proxy-Authorization'] = `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}`;
     return proxyReqOpts;
   },
   userResHeaderDecorator(headers, userReq, userRes, proxyReq, proxyRes) {
